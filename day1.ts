@@ -1,6 +1,4 @@
-import fs from "node:fs"
-
-const inputRaw = fs.readFileSync("1.txt").toString()
+const inputRaw = Deno.readTextFileSync("day1.txt")
 const input = inputRaw.split("\n")
     .filter((line) => line.length > 0)
     .map(

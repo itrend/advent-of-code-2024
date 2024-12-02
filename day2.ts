@@ -1,5 +1,5 @@
-const IN = "2.txt"
-// const IN = "2small.txt"
+const IN = "day2.txt"
+// const IN = "day2small.txt"
 const inputRaw = Deno.readTextFileSync(IN)
 const input = inputRaw.split("\n")
     .filter((line) => line.length > 0)
@@ -17,7 +17,7 @@ function isSafe(a: number[]): boolean {
     return true
 }
 
-const r1 = input.reduce((s, a) => s + (isSafe(a) ? 1 : 0), 0)
+const r1 = input.filter(isSafe).length
 console.log("Part 1 =>", r1)
 
 function isSafe2(a: number[]): boolean {
@@ -29,5 +29,5 @@ function isSafe2(a: number[]): boolean {
     return false
 }
 
-const r2 = input.reduce((s, a) => s + (isSafe2(a) ? 1 : 0), 0)
+const r2 = input.filter(isSafe2).length
 console.log("Part 2 =>", r2)
