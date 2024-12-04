@@ -31,8 +31,8 @@ console.log("Part 1 =>", r1)
 
 
 function crossMas(r: number, c: number): boolean {
-    return (((input[r-1][c-1] === "M" && input[r+1][c+1] === "S") || (input[r-1][c-1] === "S" && input[r+1][c+1] === "M"))
-        &&  ((input[r-1][c+1] === "M" && input[r+1][c-1] === "S") || (input[r-1][c+1] === "S" && input[r+1][c-1] === "M")))
+    const ms = (dr: number, dc: number) => [input[r-dr][c-dc], input[r+dr][c+dc]].toSorted().join("") === "MS"
+    return ms(1, 1) && ms(1, -1)
 }
 
 let r2 = 0
