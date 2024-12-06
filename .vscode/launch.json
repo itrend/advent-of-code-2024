@@ -6,12 +6,11 @@
     "configurations": [
         {
             "request": "launch",
-            "name": "Day 5",
+            "name": "Day 6",
             "type": "node",
-            "program": "${workspaceFolder}/day5.ts",
+            "program": "${workspaceFolder}/day6.ts",
             "cwd": "${workspaceFolder}",
             "env": {},
-            // "runtimeExecutable": "C:\\Users\\edac\\AppData\\Local\\Microsoft\\WinGet\\Links\\deno.EXE",
             "runtimeExecutable": "deno",
             "runtimeArgs": [
                 "run",
