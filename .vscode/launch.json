@@ -6,9 +6,9 @@
     "configurations": [
         {
             "request": "launch",
-            "name": "Day 6",
+            "name": "Debug",
             "type": "node",
-            "program": "${workspaceFolder}/day6.ts",
+            "program": "${workspaceFolder}/day9.ts",
             "cwd": "${workspaceFolder}",
             "env": {},
             "runtimeExecutable": "deno",
