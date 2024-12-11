@@ -31,24 +31,23 @@ function blink2(stones: Stones2): Stones2 {
     const r: Stones2 = new Map()
     stones.entries().forEach(([stone, count]) => {
         for (const ns of mapStone(stone)) {
-            const c = r.get(ns)
-            r.set(ns, (c ?? 0) + count)
+            r.set(ns, (r.get(ns) ?? 0) + count)
         }
     })
     return r
 }
 
 
-// let r1 = stones
-// for (let i=0; i<25; ++i) {
-//     console.log(i, "=>", r1.length)
-//     r1 = blink(r1)
-// }
-// console.log("Part 1 =>", r1.length)
+let r1 = stones
+for (let i=0; i<25; ++i) {
+    console.log(i, "=>", r1.length)
+    r1 = blink(r1)
+}
+console.log("Part 1 =>", r1.length)
 
 
 let r2: Stones2 = new Map()
-for (const s of stones) r2.set(s, 1)
+for (const s of stones) r2.set(s, 1 + (r2.get(s) ?? 0))
 for (let i=0; i<75; ++i) {
     console.log(i, "=>", r2.size)
     r2 = blink2(r2)
