@@ -29,10 +29,8 @@ function fill(r: number, c: number, region: Region) {
             if (regionGrid[rr][cc] < 0)
                 fill(rr, cc, region)
         } else {
-            if (dr === 0)
-                region.extV.push([r, c + Math.max(dc, 0)])
-            else
-                region.extH.push([r + Math.max(dr, 0), c])
+            const extList = dr === 0 ? region.extV : region.extH
+            extList.push([r + Math.max(dr, 0), c + Math.max(dc, 0)])
         }
     }
 }
@@ -72,7 +70,7 @@ function sides(region: Region): number {
     }
     const regionFund = (r: number, c: number) => regionGrid[r]?.[c]
     return horizontalSides(region.extH, regionFund) +
-        horizontalSides(region.extV.map(([a, b]) => ([b, a])), (c, r) => regionFund(r, c))
+        horizontalSides(region.extV.map(([r, c]) => ([c, r])), (c, r) => regionFund(r, c))
 }
 
 
