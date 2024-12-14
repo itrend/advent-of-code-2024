@@ -29,3 +29,53 @@ function part1(t: number) {
 }
 
 console.log("Part 1 =>", part1(T1))
+
+
+function step() {
+    input.forEach((r) => {
+        r[0] = wrap(r[0] + r[2], W)
+        r[1] = wrap(r[1] + r[3], H)
+    })
+}
+
+
+function horizLine(c: number[][]): boolean {
+    c.sort(([a1, a2], [b1, b2]) => a1-b1 === 0 ? a2-b2 : a1-b1)
+    for (let i=0; i < c.length;) {
+        let j = i+1
+        while (j < c.length && c[i][0] === c[j][0] && c[j][1] - c[j-1][1] <= 1)
+            ++j
+        if (j-i > 20) return true
+        i = j
+    }
+    return false
+}
+
+
+function robotGrid(robots: number[][]) {
+    const grid: string[][] = []
+    for (let r=0; r<H; ++r) grid.push(new Array(W).fill(" "))
+    for (const [x, y] of robots) grid[y][x] = '*'
+    return grid
+}
+
+
+function writeRobotGrid(fileNumber: number, robots: number[][]) {
+    const grid = robotGrid(robots)
+    Deno.writeTextFileSync(`robots-${fileNumber}.txt`, grid.map((r) => r.join("")).join("\n"))
+}
+
+
+function part2() {
+    for (let i=1; i<100000; ++i) {
+        step()
+        if (horizLine(input)) {
+            console.log("!!!", i)
+            writeRobotGrid(i, input)
+        }
+        if (i%1000 === 0) console.log(i)
+    }
+}
+
+
+part2()
