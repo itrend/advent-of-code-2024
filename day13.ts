@@ -37,6 +37,7 @@ function winCost2(a: Pair, b: Pair, t: Pair) {
     assert(Math.abs(na1-na2) < 1, `WRONG NA2 ${na1} ${na2}`)
     const na = na1
     if (na == Math.floor(na) && nb == Math.floor(nb)) {
+        console.log(a, b, t, na, nb)
         for (let i=0; i<2; ++i)
             assert(a[i] * na + b[i] * nb === t[i], "ALMOST")
         return 3*na + nb
@@ -45,12 +46,13 @@ function winCost2(a: Pair, b: Pair, t: Pair) {
 }
 
 
-const A = 10000000000000
-// const A = 0
+// const A = 10000000000000
+const A = 0
 let r2 = 0
 for (let i=0; i<input.length; i += 3) {
     input[i+2] = input[i+2].map(a => A + a)
     const a = input[i], b = input[i+1], t = input[i+2]
+    console.log(i)
     const cost = winCost2(a, b, t)
     r2 += cost
 }
