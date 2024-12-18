@@ -27,22 +27,38 @@ const D = [[-1,0],[0,1],[1,0],[0,-1],]
 
 function part1(bytes = getByteSet(MaxBytes)) {
     const dist = makeGrid(R, C, INF)
-    let front = [[0, 0]]
-    dist[0][0] = 0
-    while (front.length) {
-        const newFront: typeof front = []
-        for (const [r, c] of front) {
-            // console.log(r, c)
-            for (const [dr, dc] of D) {
-                const rr = r+dr, cc = c+dc
-                if (inGrid(rr, cc) && !bytes.has(ckey(rr, cc)) && dist[rr][cc] > dist[r][c] + 1) {
-                    newFront.push([rr, cc])
-                    dist[rr][cc] = dist[r][c] + 1
+
+    function dfs(r: number, c: number, d: number) {
+        d++
+        if (!inGrid(r, c) || bytes.has(ckey(r, c)) || dist[r][c] <= d) return
+        dist[r][c] = d
+        for (const [dr, dc] of D) {
+            dfs(r+dr, c+dc, d)
+        }
+    }
+
+    function bfs() {
+        let front = [[0, 0]]
+        dist[0][0] = 0
+        while (front.length) {
+            const newFront: typeof front = []
+            for (const [r, c] of front) {
+                // console.log(r, c)
+                for (const [dr, dc] of D) {
+                    const rr = r+dr, cc = c+dc
+                    if (inGrid(rr, cc) && !bytes.has(ckey(rr, cc)) && dist[rr][cc] > dist[r][c] + 1) {
+                        newFront.push([rr, cc])
+                        dist[rr][cc] = dist[r][c] + 1
+                    }
                 }
             }
+            front = newFront
         }
-        front = newFront
     }
+
+    bfs()
+    // dfs(0, 0, -1)
+
     return dist[R-1][C-1]
 }
 
@@ -51,6 +67,7 @@ console.log("Part 1 =>", part1())
 function part2(): [number, number] {
     const byteSet = getByteSet(MaxBytes)
     for (let i=MaxBytes+1; i<bytes.length; ++i) {
+        console.log(i)
         byteSet.add(ckey(bytes[i][0], bytes[i][1]))
         if (part1(byteSet) === INF) return [bytes[i][1], bytes[i][0]]
     }
