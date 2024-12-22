@@ -8,7 +8,7 @@
             "request": "launch",
             "name": "Debug",
             "type": "node",
-            "program": "${workspaceFolder}/day21.ts",
+            "program": "${workspaceFolder}/day22.ts",
             "cwd": "${workspaceFolder}",
             "env": {},
             "runtimeExecutable": "deno",
