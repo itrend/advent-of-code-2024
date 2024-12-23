@@ -44,66 +44,22 @@ console.log("tmax =", tmax)
 
 function part2() {
     const EMPTY = new Set<string>()
-    let best = EMPTY
-    const toPassword = (s: Set<string>) => s.values().toArray().sort().join(",")
-    const seen = new Set<string>()
+    let best: string[] = []
 
-    function dfs(c: Set<string>, f: Set<string>) {
-        const cp = toPassword(c)
-        if (seen.has(cp)) return
-        seen.add(cp)
-        if (f.size === 0) {
-            if (c.size > best.size) {
-                best = new Set(c)
-                if (best.size === tmax) throw new Error("PASSWORD IS: " + toPassword(best))
-            }
-            return
-        }
-        // if (c.size <= 2) console.log("c#", c.size, "f#", f.size, "b#", best.size, c)
-        for (const u of f) {
-            const nf = f.intersection(g.get(u) ?? EMPTY)
-            c.add(u)
-            dfs(c, nf)
-            c.delete(u)
-        }
-    }
-
-    const c = new Set<string>()
-    for (const u of g.keys()) {
-        c.add(u)
-        dfs(c, g.get(u) ?? EMPTY)
-        c.delete(u)
-    }
-    return toPassword(best)
-}
-
-
-function part2Num() {
-    const EMPTY = new Set<number>()
-    const nodes = [...g.keys()].sort()
-    const nodeMap = Object.fromEntries(nodes.map((v, i) => [v, i]))
-    const gn = nodes.map((name) => new Set(g.get(name)!.values().map(v => nodeMap[v])))
-    let best = EMPTY
-
-    const toPassword = (s: Set<number>) => s.values().map((v) => nodes[v]).toArray().sort().join(",")
-
-    function dfs(u: number, c: Set<number>, f: Set<number>) {
-        c.add(u)
-        if (c.size > best.size) {
-            best = new Set(c)
-            // if (best.size === tmax) throw new Error("PASSWORD IS: " + toPassword(best))
-        }
+    function dfs(u: string, c: string[], f: Set<string>) {
+        c.push(u)
+        if (c.length > best.length) best = [...c]
         for (const v of f)
             if (v > u)
-                dfs(v, c, f.intersection(gn[u]) ?? EMPTY)
-        c.delete(u)
+                dfs(v, c, f.intersection(g.get(v) ?? EMPTY))
+        c.pop()
     }
 
-    const c = new Set<number>()
-    for (let u=0; u<gn.length; ++u) {
-        dfs(u, c, gn[u])
+    const c: string[] = []
+    for (const u of g.keys()) {
+        dfs(u, c, g.get(u) ?? EMPTY)
     }
-    return toPassword(best)
+    return best.join(",")
 }
 
 
