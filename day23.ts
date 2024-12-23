@@ -40,11 +40,12 @@ function part1() {
 
 console.log("Part 1 =>", part1())
 console.log("Nodes =", g.size)
-const EMPTY = new Set<string>()
+const tmax = Math.max(...g.values().map(s => s.size))
+console.log("tmax =", tmax)
 
 
 function part2() {
-    const tmax = Math.max(...g.values().map(s => s.size))
+    const EMPTY = new Set<string>()
     let best = EMPTY
     const toPassword = (s: Set<string>) => s.values().toArray().sort().join(",")
     const seen = new Set<string>()
@@ -70,12 +71,39 @@ function part2() {
     }
 
     const c = new Set<string>()
-    let n = 0
     for (const u of g.keys()) {
-        // console.log(n++, u)
         c.add(u)
         dfs(c, g.get(u) ?? EMPTY)
         c.delete(u)
+    }
+    return toPassword(best)
+}
+
+
+function part2Num() {
+    const EMPTY = new Set<number>()
+    const nodes = [...g.keys()].sort()
+    const nodeMap = Object.fromEntries(nodes.map((v, i) => [v, i]))
+    const gn = nodes.map((name) => new Set(g.get(name)!.values().map(v => nodeMap[v])))
+    let best = EMPTY
+
+    const toPassword = (s: Set<number>) => s.values().map((v) => nodes[v]).toArray().sort().join(",")
+
+    function dfs(u: number, c: Set<number>, f: Set<number>) {
+        c.add(u)
+        if (c.size > best.size) {
+            best = new Set(c)
+            // if (best.size === tmax) throw new Error("PASSWORD IS: " + toPassword(best))
+        }
+        for (const v of f)
+            if (v > u)
+                dfs(v, c, f.intersection(gn[u]) ?? EMPTY)
+        c.delete(u)
+    }
+
+    const c = new Set<number>()
+    for (let u=0; u<gn.length; ++u) {
+        dfs(u, c, gn[u])
     }
     return toPassword(best)
 }
@@ -91,7 +119,7 @@ function adjHist() {
 adjHist().forEach((v, i) => console.log(i, "=>", v))
 let t = new Date().getTime()
 try {
-    console.log("Part 2 =>", part2())
+    console.log("Part 2 =>", part2Num())
 } finally {
     t = new Date().getTime() - t
     console.log("Time", t)
