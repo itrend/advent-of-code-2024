@@ -1,3 +1,5 @@
+import { timeIt } from "./time.ts";
+
 const IN_SMALL = "day23small.in"
 const IN_BIG = "day23.in"
 let IN = IN_BIG
@@ -13,8 +15,6 @@ const gadd = (a: string, b: string) => {
     r.add(b)
 }
 
-const gin = (a: string, b: string) => !!g.get(a)?.has(b)
-
 for (const [a, b] of input) {
     gadd(a, b)
     gadd(b, a)
@@ -23,10 +23,8 @@ for (const [a, b] of input) {
 
 function part1() {
     const nl = [...g.keys()]
-    nl.sort((a, b) => {
-        const at = a.startsWith("t"), bt = b.startsWith("t")
-        return at === bt ? 0 : (at ? -1: +1)
-    })
+    const gin = (a: string, b: string) => !!g.get(a)?.has(b)
+    nl.sort((a, b) => +b.startsWith("t") - +a.startsWith("t"))
     let r1 = 0
     for (let i=0; i<nl.length; ++i)
         if (nl[i].startsWith("t"))
@@ -116,11 +114,6 @@ function adjHist() {
 }
 
 
-adjHist().forEach((v, i) => console.log(i, "=>", v))
-let t = new Date().getTime()
-try {
-    console.log("Part 2 =>", part2Num())
-} finally {
-    t = new Date().getTime() - t
-    console.log("Time", t)
-}
+adjHist().forEach((v, i) => { if (v > 0) console.log("H", i, "=>", v) })
+const r2 = timeIt(() => part2())
+console.log("Part 2 =>", r2)
