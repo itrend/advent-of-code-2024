@@ -36,28 +36,28 @@ function part1() {
 }
 
 
-console.log("Part 1 =>", part1())
+console.log("Part 1 =>", timeIt(part1))
 console.log("Nodes =", g.size)
 const tmax = Math.max(...g.values().map(s => s.size))
 console.log("tmax =", tmax)
 
 
 function part2() {
-    const EMPTY = new Set<string>()
-    let best: string[] = []
+    const cur: string[] = []
+    const best: string[] = []
 
-    function dfs(u: string, c: string[], f: Set<string>) {
-        c.push(u)
-        if (c.length > best.length) best = [...c]
+    function dfs(u: string, f: Set<string>) {
+        cur.push(u)
+        if (cur.length > best.length)
+            best.splice(0, best.length, ...cur)
         for (const v of f)
             if (v > u)
-                dfs(v, c, f.intersection(g.get(v) ?? EMPTY))
-        c.pop()
+                dfs(v, f.intersection(g.get(v)!))
+        cur.pop()
     }
 
-    const c: string[] = []
     for (const u of g.keys()) {
-        dfs(u, c, g.get(u) ?? EMPTY)
+        dfs(u, g.get(u)!)
     }
     return best.join(",")
 }
@@ -71,5 +71,5 @@ function adjHist() {
 
 
 adjHist().forEach((v, i) => { if (v > 0) console.log("H", i, "=>", v) })
-const r2 = timeIt(() => part2())
+const r2 = timeIt(part2)
 console.log("Part 2 =>", r2)
