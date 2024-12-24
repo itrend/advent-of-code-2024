@@ -56,9 +56,7 @@ function part2() {
         cur.pop()
     }
 
-    for (const u of g.keys()) {
-        dfs(u, g.get(u)!)
-    }
+    g.forEach((adj, u) => dfs(u, adj))
     return best.join(",")
 }
 
